@@ -27,7 +27,7 @@ PATH_TO_CKPT = os.path.join(current_dir, MODEL_NAME, 'frozen_inference_graph.pb'
 ## List of available dataset(NUM_CLASSES): kitti(2), mscoco(90), oid_bbox_trainable(545), pascal(20), pet(37)
 
 DATASET_USED  = 'mscoco'
-PATH_TO_LABELS = os.path.join(HERE, '../models/object_detection', 'data', '%s_label_map.pbtxt'%(DATASET_USED))
+PATH_TO_LABELS = os.path.join(HERE, '../models/research/object_detection', 'data', '%s_label_map.pbtxt'%(DATASET_USED))
 NUM_CLASSES = 90
 
 # Loading label map
@@ -84,7 +84,7 @@ class ObjectDetectionPredict():
         return scores, classes, image_np
 
 def main():
-    images = [Image.open("../models/object_detection/test_images/image1.jpg")]
+    images = [Image.open("../models/research/object_detection/test_images/image1.jpg")]
 
     ObjectDetectionPredict_class = ObjectDetectionPredict()
     for image in images:
