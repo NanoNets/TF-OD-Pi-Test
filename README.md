@@ -31,6 +31,8 @@ all different pre-trained models are available at [here](https://github.com/tens
 
 clone this repo and download model in clonned folder	
 	
+	git clone https://atspatel@bitbucket.org/object_detection_pi/tf_od_pi.git
+	cd tf_od_git
 	wget http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_11_06_2017.tar.gz
 	tar -zxvf ssd_mobilenet_v1_coco_11_06_2017.tar.gz
 
