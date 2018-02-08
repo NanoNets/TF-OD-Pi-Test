@@ -13,7 +13,7 @@ sys.path.append(os.path.join(root_dir, 'models'))
 import tensorflow as tf
 import numpy as np
 
-from PIL import image
+from PIL import Image
 from object_detection.utils import label_map_util, visualization_utils
 
 ## change the model name to try with different model
@@ -27,7 +27,7 @@ PATH_TO_CKPT = os.path.join(current_dir, MODEL_NAME, 'frozen_inference_graph.pb'
 ## List of available dataset(NUM_CLASSES): kitti(2), mscoco(90), oid_bbox_trainable(545), pascal(20), pet(37)
 
 DATASET_USED  = 'mscoco'
-PATH_TO_LABELS = os.path.join(HERE, '../models/research/object_detection', 'data', '%s_label_map.pbtxt'%(DATASET_USED))
+PATH_TO_LABELS = os.path.join(root_dir, 'models/research/object_detection', 'data', '%s_label_map.pbtxt'%(DATASET_USED))
 NUM_CLASSES = 90
 
 # Loading label map
@@ -78,7 +78,7 @@ class ObjectDetectionPredict():
             np.squeeze(boxes),
             np.squeeze(classes).astype(np.int32),
             np.squeeze(scores),
-            category_index,
+            self.category_index,
             use_normalized_coordinates=True,
             line_thickness=8)
         return scores, classes, image_np
@@ -92,8 +92,8 @@ def main():
         image_np = np.array(image.getdata()).reshape(
             (im_height, im_width, 3)).astype(np.uint8)
 
-        scores, classes, image_with_labels = detect_objects(image_np)
-        print("\n".join("{0:<20s}: {1:.1f}%".format(category_index[c]['name'], s*100.) for (c, s) in zip(classes[0], scores[0])))
+        scores, classes, image_with_labels = ObjectDetectionPredict_class.detect_objects(image_np)
+        print("\n".join("{0:<20s}: {1:.1f}%".format(ObjectDetectionPredict_class.category_index[c]['name'], s*100.) for (c, s) in zip(classes[0], scores[0])))
 
     ObjectDetectionPredict_class.sess.close()
 
