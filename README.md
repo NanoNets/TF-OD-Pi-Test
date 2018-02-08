@@ -28,7 +28,8 @@ git clone https://github.com/tensorflow/models.git
 
 #### Download Pre-Trained Models ####
 all different pre-trained models are available at [here](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md)
-clone this repo and download model in folder	
+
+clone this repo and download model in clonned folder	
 	wget http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_11_06_2017.tar.gz
 	tar -zxvf ssd_mobilenet_v1_coco_11_06_2017.tar.gz
 
