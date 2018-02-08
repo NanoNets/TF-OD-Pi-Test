@@ -38,4 +38,5 @@ all different pre-trained models are available at [here](https://github.com/tens
 
 #### Predict ####
 clone this repo and run
+	
 	python ObjectDetectionPredict.py
