@@ -1,7 +1,5 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
-
 ### What is this repository for? ###
 
 * To Predict Object Detection using Tensorflow Object Detection API on Raspberry PI
@@ -43,4 +41,4 @@ clone this repo and download model in clonned folder
 #### Predict ####
 clone this repo and run
 	
-	python ObjectDetectionPredict.py
+	python ObjectDetectionPredict.py --model data/0/quantized_graph.pb --labels data/label_map.pbtxt --images /data/image1.jpg /data/image2.jpg

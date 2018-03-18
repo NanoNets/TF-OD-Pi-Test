@@ -1,14 +1,14 @@
+"""
+Script to get object detection predictions on raspberry pi
+"""
+
 __all__ = ['ObjectDetectionPredict']
 __version__ = '0.1'
 __author__ = 'NanoNets'
 
 import os
 import sys
-
-current_dir = os.path.dirname(os.path.realpath(__file__))
-root_dir, _ = os.path.split(current_dir)
-
-sys.path.append(os.path.join(root_dir, 'models'))
+import argparse
 
 import tensorflow as tf
 import numpy as np
@@ -16,35 +16,31 @@ import numpy as np
 from PIL import Image
 from object_detection.utils import label_map_util, visualization_utils
 
-## change the model name to try with different model
-## list of avilable models:
+parser = argparse.ArgumentParser(description='Predict result using trained graph')
+parser.add_argument('--model', help='Model path')
+parser.add_argument('--labels', help='Label file path')
+parser.add_argument('--images', nargs='+', help='Path to images')
+args = parser.parse_args()
 
+current_dir = os.path.dirname(os.path.realpath(__file__))
+root_dir, _ = os.path.split(current_dir)
 
-MODEL_NAME = 'ssd_mobilenet_v1_coco_11_06_2017'
-PATH_TO_CKPT = os.path.join(current_dir, MODEL_NAME, 'frozen_inference_graph.pb')
-
-# List of the strings that is used to add correct label for each box.
-## List of available dataset(NUM_CLASSES): kitti(2), mscoco(90), oid_bbox_trainable(545), pascal(20), pet(37)
-
-DATASET_USED  = 'mscoco'
-PATH_TO_LABELS = os.path.join(root_dir, 'models/research/object_detection', 'data', '%s_label_map.pbtxt'%(DATASET_USED))
-NUM_CLASSES = 90
-
-# Loading label map
+sys.path.append(os.path.join(root_dir, 'models'))
+MAX_CLASSES = 90
 
 class ObjectDetectionPredict():
-    def __init__(self):
-        label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
-        categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES,
-                                                            use_display_name=True)
+    def __init__(self, model_path, labels_path):
+        label_map = label_map_util.load_labelmap(labels_path)
+        categories = label_map_util.convert_label_map_to_categories(
+            label_map, max_num_classes=MAX_CLASSES, use_display_name=True)
         self.category_index = label_map_util.create_category_index(categories)
-        self.load_tf_graph()
+        self.load_tf_graph(model_path)
 
-    def load_tf_graph(self):
+    def load_tf_graph(self, model_path):
         self.detection_graph = tf.Graph()
         with self.detection_graph.as_default():
             od_graph_def = tf.GraphDef()
-            with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
+            with tf.gfile.GFile(model_path, 'rb') as fid:
                 serialized_graph = fid.read()
                 od_graph_def.ParseFromString(serialized_graph)
                 tf.import_graph_def(od_graph_def, name='')
@@ -84,10 +80,9 @@ class ObjectDetectionPredict():
         return scores, classes, image_np
 
 def main():
-    images = [Image.open("../models/research/object_detection/test_images/image1.jpg")]
-
-    ObjectDetectionPredict_class = ObjectDetectionPredict()
-    for image in images:
+    ObjectDetectionPredict_class = ObjectDetectionPredict(args.model, args.labels)
+    for image_path in args.images:
+        image = Image.open(image_path)
         (im_width, im_height) = image.size
         image_np = np.array(image.getdata()).reshape(
             (im_height, im_width, 3)).astype(np.uint8)
