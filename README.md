@@ -24,15 +24,12 @@ git clone https://github.com/tensorflow/models.git
 ##### add path to bashrc #####
 	export PYTHONPATH=$PYTHONPATH:/home/pi/models/research:/home/pi/models/research/slim
 
-#### Download Pre-Trained Models ####
-all different pre-trained models are available at [here](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md)
+#### Copy trained model on pi ####
+Train a model to run on raspberry pi using this repo
 
-clone this repo and download model in clonned folder	
-	
-	git clone https://atspatel@bitbucket.org/object_detection_pi/tf_od_pi.git
-	cd tf_od_git
-	wget http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_11_06_2017.tar.gz
-	tar -zxvf ssd_mobilenet_v1_coco_11_06_2017.tar.gz
+https://github.com/NanoNets/RaspberryPi-ObjectDetection-TensorFlow
+
+Copy exported model and label file from data directory to raspberry pi 
 
 ##### other Packages required #####
 	sudo apt-get install libjpeg-dev
